@@ -1,0 +1,70 @@
+<div style="text-align:center">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mx-auto">
+        <div class="form-area">
+          <form role="form">
+            <h1 class="well">
+              Crypto Trading
+            </h1>
+            <br style="clear:both">
+            <h3 style="margin-bottom: 25px; text-align: left;">Form</h3>
+
+            <div class="form-group">
+              <label for="sel1" class="float-left form-label text-left">Coin*</label>
+              <div class="float-left form-input-wrapper">
+              <select class="form-control" id="sel1" >
+                <option value="BTC">BTC</option>
+                <option value="ETH">ETH</option>
+              </select>
+            </div>
+            </div>
+
+            <div class="form-group">
+              <label for="coin" class="float-left form-label text-left">Coin*</label>
+              <div class="float-left form-input-wrapper">
+                <input type="text" class="form-control" id="coin" name="coin" placeholder="Coin"
+                  [(ngModel)]="message.coin" required>
+              </div>
+
+            </div>
+            <div class="form-group">
+              <label for="events" class="float-left form-label text-left">Events*</label>
+              <div class="float-left form-input-wrapper">
+                <input type="text" class="form-control" id="events" name="events" placeholder="Events"
+                  [(ngModel)]="message.events" required>
+              </div>
+            </div>
+
+            <button type="button" id="submit" name="submit" class="btn btn-primary pull-left mr-3"
+              (click)="save()">Submit</button>
+            <button type="button" id="cancel" name="cancel" class="btn btn-primary pull-left mr-3"
+              (click)="cancel()">Cancel</button>
+            <button type="button" id="printableArea" name="view" class="btn btn-primary pull-left mr-3"
+              (click)="view()">View</button>
+
+          </form>
+        </div>
+      </div>
+      <div class="col-md-6 mx-auto">
+        <h1>Events</h1>
+        <ul>
+          <li *ngFor="let message of messages5">
+            <p>Coin : {{message.coin + " " }}
+
+              <a *ngIf="message.coin === 'BTC'"
+                href="https://www.cmegroup.com/trading/equity-index/us-index/bitcoin_quotes_volume_voi.html#tradeDate=20190220">Click
+                here</a>
+              <a *ngIf="message.coin === 'ETH'" href="https://datamish.com/d/000000004/btcusd?refresh=20s&orgId=1">Click
+                here</a>
+            </p>
+            <p>events : {{message.events}}</p>
+            <p>time : {{message.time}}</p>
+            <p>prevChildKey : {{message.prevChildKey}}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
