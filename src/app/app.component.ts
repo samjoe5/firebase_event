@@ -37,13 +37,14 @@ export class AppComponent {
       var newMessage = snap.val();
       console.log(JSON.stringify(snap.val()));
       
-       this.messages.push({
-           "coin": snap.val().coin,
-           "title": snap.val().title,
-           "url": snap.val().url,
-           "time": snap.val().time,
-   }
-       )}
+       this.messages.push (
+           {"coin": newMessage.coin,
+           "title": newMessage.title,
+           "url": newMessage.url,
+           "time": newMessage.time,
+           });
+           this.messages5 = [...this.messages];
+       }
     // var messageRef = firebase.database().ref("message/");
     
     // messageRef.on("child_added", (data, prevChildKey) => {
