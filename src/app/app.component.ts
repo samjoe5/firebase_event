@@ -17,7 +17,8 @@ import { Timestamp } from 'rxjs/internal/operators/timestamp';
 export class AppComponent {
   public message: any = {
     coin: "",
-    events: "",
+    title: "",
+    url: "",
     time:""
   }
 
@@ -27,45 +28,55 @@ export class AppComponent {
     this.message = db.list('/message');
 
   }
+  
+
   view(): void {
-    var messageRef = firebase.database().ref("message/");
+
+    var messageRef = firebase.database().ref('message/');
+    messageRef.once('value', (snap) => {
+      var newMessage = snap.val();
+      console.log(JSON.stringify(snap.val()));
+      
+       this.messages.push({
+           "coin": snap.val().coin,
+           "title": snap.val().title,
+           "url": snap.val().url,
+           "time": snap.val().time,
+   }
+       )}
+    // var messageRef = firebase.database().ref("message/");
     
-    messageRef.on("child_added", (data, prevChildKey) => {
-      var newMessage = data.val();
+    // messageRef.on("child_added", (data, prevChildKey) => {
+    //   this.messages = [];
+    //   var newMessage = data.val();
 
-      console.log("coin: " + newMessage.coin);
-      console.log("events: " + newMessage.events);
-      console.log("time: " + newMessage.time)
-      console.log("Previous Message: " + prevChildKey);
+    //   console.log("coin: " + newMessage.coin);
+    //   console.log("title: " + newMessage.title);
+    //   console.log("url: " + newMessage.url);
+    //   console.log("time: " + newMessage.time)
+    //   //console.log("Previous Message: " + prevChildKey);
 
-      this.zone.run(() => {
-        this.messages.push({
-          "coin": newMessage.coin,
-          "events": newMessage.events,
-          "time": newMessage.time,
-          "prevChildKey": prevChildKey,
+    //   //this.zone.run(() => {
+    //     this.messages.push({
+    //       "coin": newMessage.coin,
+    //       "title": newMessage.title,
+    //       "url": newMessage.url,
+    //       "time": newMessage.time,
+    //       //"prevChildKey": prevChildKey,
 
-        });
+    //     });
 
-        this.messages5 = [...this.messages].slice(1).slice(-5);
+    //     this.messages5 = [...this.messages];
 
-      });
+    //   //});
 
-    })
-  };
-
-  // time(): void {
-  //   var userLastOnlineRef = firebase.database().ref("message/");
-  //   userLastOnlineRef.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
-  //   userLastOnlineRef.on('value', (snapshot) => {
-  //     console.log(snapshot.val());
-  //   });
-  // }
+    // })
+  )};
 
   cancel(): void {
     console.log('do nothing')
     this.message.coin = ""
-    this.message.events = ""
+    this.message.url = ""
   }
   save(): void {
     let error = false;
@@ -73,14 +84,16 @@ export class AppComponent {
     if (error === false) {
       this.message.push({
         "coin": this.message.coin,
-        "events": this.message.events,
+        "title": this.message.title,
+        "url": this.message.url,
         "time": firebase.database.ServerValue.TIMESTAMP
 
       });
       console.log(this.message);
       alert("Submitted Successfully!");
       this.message.coin = ""
-      this.message.events = ""
+      this.message.title = ""
+      this.message.url = ""
 
     }
   }
