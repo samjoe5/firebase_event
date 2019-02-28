@@ -32,47 +32,57 @@ export class AppComponent {
 
   view(): void {
 
-    var messageRef = firebase.database().ref('message/');
-    messageRef.once('value', (snap) => {
-      var newMessage = snap.val();
-      console.log(JSON.stringify(snap.val()));
+    // var messageRef = firebase.database().ref('message/');
+    // messageRef.once('value', (snap , prevChildKey) => {
+    //   var newMessage = JSON.stringify(snap.val());
+    //   var prevChildKey = prevChildKey
+    //   //console.log(JSON.stringify(snap.val()));
       
-       this.messages.push (
-           {"coin": newMessage.coin,
-           "title": newMessage.title,
-           "url": newMessage.url,
-           "time": newMessage.time,
-           });
-           this.messages5 = [...this.messages];
-       }
-    // var messageRef = firebase.database().ref("message/");
+    //    this.messages = [ 
+    //        {"coin": newMessage},
+    //       //  {"title": newMessage.title},
+    //       //  {"url": newMessage.url},
+    //       //  {"time": newMessage.time,
+    //       //  }
+    //     ];
+    //        console.log('------')
+    //        this.messages5 = [this.messages];
+    //        console.log(this.messages5)
+    //    }
+    var messageRef = firebase.database().ref("message/");
     
-    // messageRef.on("child_added", (data, prevChildKey) => {
-    //   this.messages = [];
-    //   var newMessage = data.val();
+    messageRef.on("child_added", (data) => {
+      //this.messages = [];
+      var newMessage = data.val();
 
-    //   console.log("coin: " + newMessage.coin);
-    //   console.log("title: " + newMessage.title);
-    //   console.log("url: " + newMessage.url);
-    //   console.log("time: " + newMessage.time)
-    //   //console.log("Previous Message: " + prevChildKey);
+      // console.log("coin: " + newMessage.coin);
+      // console.log("title: " + newMessage.title);
+      // console.log("url: " + newMessage.url);
+      // console.log("time: " + newMessage.time)
+      //console.log("Previous Message: " + prevChildKey);
 
-    //   //this.zone.run(() => {
-    //     this.messages.push({
-    //       "coin": newMessage.coin,
-    //       "title": newMessage.title,
-    //       "url": newMessage.url,
-    //       "time": newMessage.time,
-    //       //"prevChildKey": prevChildKey,
+      //this.zone.run(() => {
+        this.messages = [{
+          "coin": (newMessage.coin),
+          "title": (newMessage.title),
+          "url": (newMessage.url),
+          "time": (newMessage.time),
+          //"prevChildKey": prevChildKey,
 
-    //     });
+        }];
+        
+        
+        //console.log(this.messages[0].coin)
+        //console.log(this.messages[0].title)
+        //console.log(this.messages[0].url)
+        //console.log(this.messages[0].time)
+        console.log(this.messages)
+        this.messages5 = this.messages;
 
-    //     this.messages5 = [...this.messages];
+      //});
 
-    //   //});
-
-    // })
-  )};
+    })
+  };
 
   cancel(): void {
     console.log('do nothing')
