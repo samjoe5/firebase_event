@@ -12,28 +12,28 @@
             <h3 style="margin-bottom: 25px; text-align: left;">Form</h3>
 
             <div class="form-group">
-              <label for="sel1" class="float-left form-label text-left">Coin*</label>
+              <label for="coin" class="float-left form-label text-left">Coin*</label>
               <div class="float-left form-input-wrapper">
-              <select class="form-control" id="sel1" >
-                <option value="BTC">BTC</option>
-                <option value="ETH">ETH</option>
-              </select>
-            </div>
+                <select class="form-control" id="coin" type="text" name="coin" [(ngModel)]="message.coin" required>
+                  <option value="BTC">BTC</option>
+                  <option value="ETH">ETH</option>
+                </select>
+              </div>
             </div>
 
             <div class="form-group">
-              <label for="coin" class="float-left form-label text-left">Coin*</label>
+              <label for="title" class="float-left form-label text-left">Title*</label>
               <div class="float-left form-input-wrapper">
-                <input type="text" class="form-control" id="coin" name="coin" placeholder="Coin"
-                  [(ngModel)]="message.coin" required>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Title"
+                  [(ngModel)]="message.title" required>
               </div>
 
             </div>
             <div class="form-group">
-              <label for="events" class="float-left form-label text-left">Events*</label>
+              <label for="url" class="float-left form-label text-left">URL*</label>
               <div class="float-left form-input-wrapper">
-                <input type="text" class="form-control" id="events" name="events" placeholder="Events"
-                  [(ngModel)]="message.events" required>
+                <input type="text" class="form-control" id="url" name="url" placeholder="URL" [(ngModel)]="message.url"
+                  required>
               </div>
             </div>
 
@@ -49,19 +49,14 @@
       </div>
       <div class="col-md-6 mx-auto">
         <h1>Events</h1>
+        <!-- <p style="text-align: left;">Coin : {{messages}}</p> -->
         <ul>
-          <li *ngFor="let message of messages5">
-            <p>Coin : {{message.coin + " " }}
+          <li *ngFor="let message of messages">
+            <p style="text-align: left;">Coin : {{message.coin}}</p>
+            <p style="text-align: left;">Title : {{message.title}}</p>
+            <p style="text-align: left;">URL : {{message.url}}</p>
+            <p style="text-align: left;">Time : {{message.time}}</p>
 
-              <a *ngIf="message.coin === 'BTC'"
-                href="https://www.cmegroup.com/trading/equity-index/us-index/bitcoin_quotes_volume_voi.html#tradeDate=20190220">Click
-                here</a>
-              <a *ngIf="message.coin === 'ETH'" href="https://datamish.com/d/000000004/btcusd?refresh=20s&orgId=1">Click
-                here</a>
-            </p>
-            <p>events : {{message.events}}</p>
-            <p>time : {{message.time}}</p>
-            <p>prevChildKey : {{message.prevChildKey}}</p>
           </li>
         </ul>
       </div>
