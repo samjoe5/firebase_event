@@ -49,9 +49,8 @@
       </div>
       <div class="col-md-6 mx-auto">
         <h1>Events</h1>
-        <!-- <p style="text-align: left;">Coin : {{messages}}</p> -->
         <ul>
-          <li *ngFor="let message of messages">
+          <li *ngFor="let message of messages" class="listing">
             <p style="text-align: left;">Coin : {{message.coin}}</p>
             <p style="text-align: left;">Title : {{message.title}}</p>
             <p style="text-align: left;">URL : {{message.url}}</p>
