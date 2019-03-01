@@ -8,6 +8,8 @@ import * as firebase from 'firebase';
 import { viewAttached } from '@angular/core/src/render3/instructions';
 import { timestamp } from 'rxjs/operators';
 import { Timestamp } from 'rxjs/internal/operators/timestamp';
+import { Key } from 'protractor';
+import { link } from 'fs';
 
 @Component({
   selector: 'app-root',
@@ -15,12 +17,15 @@ import { Timestamp } from 'rxjs/internal/operators/timestamp';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  public message: any = {
-    coin: "",
-    title: "",
-    url: "",
-    time:""
-  }
+
+ 
+   public message: any = {
+      coin: "",
+      title: "",
+      url: "",
+      time:""
+    }
+
 
   public messages = [];
   public messages5 = [];
@@ -31,58 +36,62 @@ export class AppComponent {
   
 
   view(): void {
-
-    // var messageRef = firebase.database().ref('message/');
-    // messageRef.once('value', (snap , prevChildKey) => {
-    //   var newMessage = JSON.stringify(snap.val());
-    //   var prevChildKey = prevChildKey
-    //   //console.log(JSON.stringify(snap.val()));
+    var listing = this.messages;
+    for (var i =0; i<listing.length;i++) {
+      listing[i].remove();
+    };
+    var ref = firebase.database().ref("message/");
+    ref.on("child_added", (snapshot, prevChildKey) => {
       
-    //    this.messages = [ 
-    //        {"coin": newMessage},
-    //       //  {"title": newMessage.title},
-    //       //  {"url": newMessage.url},
-    //       //  {"time": newMessage.time,
-    //       //  }
-    //     ];
-    //        console.log('------')
-    //        this.messages5 = [this.messages];
-    //        console.log(this.messages5)
-    //    }
-    var messageRef = firebase.database().ref("message/");
+      var newMessage = (snapshot.val());
+      console.log(listing)
+      
+      
+       this.messages.push(
+           {"coin": (newMessage.coin),
+           "title": (newMessage.title),
+           "url": (newMessage.url),
+           "time": (newMessage.time)
+           });
+           console.log('------')
+           this.messages5 = [this.messages];
+           console.log(this.messages)
+       }
+
+          // var messageRef = firebase.database().ref("message/");
     
-    messageRef.on("child_added", (data) => {
-      //this.messages = [];
-      var newMessage = data.val();
+    // messageRef.on("child_added", (data) => {
+    //   //this.messages = [];
+    //   var newMessage = data.val();
 
-      // console.log("coin: " + newMessage.coin);
-      // console.log("title: " + newMessage.title);
-      // console.log("url: " + newMessage.url);
-      // console.log("time: " + newMessage.time)
-      //console.log("Previous Message: " + prevChildKey);
+    //   // console.log("coin: " + newMessage.coin);
+    //   // console.log("title: " + newMessage.title);
+    //   // console.log("url: " + newMessage.url);
+    //   // console.log("time: " + newMessage.time)
+    //   //console.log("Previous Message: " + prevChildKey);
 
-      //this.zone.run(() => {
-        this.messages = [{
-          "coin": (newMessage.coin),
-          "title": (newMessage.title),
-          "url": (newMessage.url),
-          "time": (newMessage.time),
-          //"prevChildKey": prevChildKey,
+    //   //this.zone.run(() => {
+    //     this.messages.push({
+    //       "coin": (newMessage.coin),
+    //       "title": (newMessage.title),
+    //       "url": (newMessage.url),
+    //       "time": (newMessage.time),
+    //       //"prevChildKey": prevChildKey,
 
-        }];
+    //     });
         
         
-        //console.log(this.messages[0].coin)
-        //console.log(this.messages[0].title)
-        //console.log(this.messages[0].url)
-        //console.log(this.messages[0].time)
-        console.log(this.messages)
-        this.messages5 = this.messages;
+    //     //console.log(this.messages[0].coin)
+    //     //console.log(this.messages[0].title)
+    //     //console.log(this.messages[0].url)
+    //     //console.log(this.messages[0].time)
+    //     console.log(this.messages)
+    //     this.messages5 = this.messages;
 
       //});
 
-    })
-  };
+    //})
+  )};
 
   cancel(): void {
     console.log('do nothing')
