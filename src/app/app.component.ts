@@ -10,6 +10,7 @@ import { timestamp } from 'rxjs/operators';
 import { Timestamp } from 'rxjs/internal/operators/timestamp';
 import { Key } from 'protractor';
 import { link } from 'fs';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'app-root',
@@ -18,80 +19,85 @@ import { link } from 'fs';
 })
 export class AppComponent {
 
- 
-   public message: any = {
-      coin: "",
-      title: "",
-      url: "",
-      time:""
-    }
+
+  public message: any = {
+    coin: "",
+
+  }
 
 
   public messages = [];
-  public messages5 = [];
   constructor(db: AngularFireDatabase, private zone: NgZone) {
     this.message = db.list('/message');
 
   }
-  
-
   view(): void {
-    var listing = this.messages;
-    for (var i =0; i<listing.length;i++) {
-      listing[i].remove();
-    };
+    this.messages = [];
     var ref = firebase.database().ref("message/");
-    ref.on("child_added", (snapshot, prevChildKey) => {
-      
+    ref.on("value", (snapshot, prevChildKey) => {
+
       var newMessage = (snapshot.val());
-      console.log(listing)
-      
-      
-       this.messages.push(
-           {"coin": (newMessage.coin),
-           "title": (newMessage.title),
-           "url": (newMessage.url),
-           "time": (newMessage.time)
-           });
-           console.log('------')
-           this.messages5 = [this.messages];
-           console.log(this.messages)
-       }
 
-          // var messageRef = firebase.database().ref("message/");
-    
-    // messageRef.on("child_added", (data) => {
-    //   //this.messages = [];
-    //   var newMessage = data.val();
+      this.zone.run(() => {
+        for (let id in newMessage) {
+          const msg = newMessage[id];
 
-    //   // console.log("coin: " + newMessage.coin);
-    //   // console.log("title: " + newMessage.title);
-    //   // console.log("url: " + newMessage.url);
-    //   // console.log("time: " + newMessage.time)
-    //   //console.log("Previous Message: " + prevChildKey);
+          this.messages.push(
+            {
+              "coin": (msg.coin),
+              "title": (msg.title),
+              "url": (msg.url),
+              "time": (msg.time)
+            });
+        }
+      });
+      //ref.orderByChild("coin").equalTo("BTC").on("child_added", function(snapshot) {
+      //console.log("Equal to filter: " + snapshot.val().coin);
+      //ref.orderByChild("coin").startAt("BTC").on("child_added", function(snapshot) {
+      //console.log("Start at filter: " + snapshot.val().coin);
+      //       ref.orderByChild("coin").endAt("BTC").on("child_added", function(snapshot) {
+      //         console.log("End at filter: " + snapshot.val().coin);
+      //  });
 
-    //   //this.zone.run(() => {
-    //     this.messages.push({
-    //       "coin": (newMessage.coin),
-    //       "title": (newMessage.title),
-    //       "url": (newMessage.url),
-    //       "time": (newMessage.time),
-    //       //"prevChildKey": prevChildKey,
 
-    //     });
-        
-        
-    //     //console.log(this.messages[0].coin)
-    //     //console.log(this.messages[0].title)
-    //     //console.log(this.messages[0].url)
-    //     //console.log(this.messages[0].time)
-    //     console.log(this.messages)
-    //     this.messages5 = this.messages;
+      //          console.log(this.messages);
+      //      }
+
+      // var messageRef = firebase.database().ref("message/");
+
+      // messageRef.on("child_added", (data) => {
+      //   //this.messages = [];
+      //   var newMessage = data.val();
+
+      //   // console.log("coin: " + newMessage.coin);
+      //   // console.log("title: " + newMessage.title);
+      //   // console.log("url: " + newMessage.url);
+      //   // console.log("time: " + newMessage.time)
+      //   //console.log("Previous Message: " + prevChildKey);
+
+      //   //this.zone.run(() => {
+      //     this.messages.push({
+      //       "coin": (newMessage.coin),
+      //       "title": (newMessage.title),
+      //       "url": (newMessage.url),
+      //       "time": (newMessage.time),
+      //       //"prevChildKey": prevChildKey,
+
+      //     });
+
+
+      //     //console.log(this.messages[0].coin)
+      //     //console.log(this.messages[0].title)
+      //     //console.log(this.messages[0].url)
+      //     //console.log(this.messages[0].time)
+      //     console.log(this.messages)
+      //     this.messages5 = this.messages;
 
       //});
 
-    //})
-  )};
+      //})
+    })
+  };
 
   cancel(): void {
     console.log('do nothing')
@@ -103,10 +109,8 @@ export class AppComponent {
 
     if (error === false) {
       this.message.push({
-        "coin": this.message.coin,
-        "title": this.message.title,
-        "url": this.message.url,
-        "time": firebase.database.ServerValue.TIMESTAMP
+        "received": this.message.received_msg,
+        // "time": firebase.database.ServerValue.TIMESTAMP
 
       });
       console.log(this.message);
